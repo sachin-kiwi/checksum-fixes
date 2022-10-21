@@ -13,7 +13,6 @@ const checkSumFixes = async()=>{
         logs('info','checksumFixes',`Connected Succesfully to ${DB_URL}`)
         const db = client.db(dbName)
         const withdrawCollection = db.collection('nftwithdrawhistories')
-        //{_id: ObjectID('62dfb5716aeb930637cfa1ae')}
         const records = await withdrawCollection.find({}).toArray()
         const totalCounts = records.length
         logs('info','checksumFixes',`Total Record count: ${totalCounts}`)
@@ -23,6 +22,8 @@ const checkSumFixes = async()=>{
             try {
             const externalAddress = record.externalAddress
             const checksumAddress = convertToChecksum(externalAddress)
+            // logs('info','checksumFixes',JSON.stringify(record))
+            // console.log(externalAddress,checksumAddress,externalAddress===checksumAddress)
             await withdrawCollection.updateOne({_id:record._id},
                 {$set:{
                     externalAddress:checksumAddress

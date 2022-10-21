@@ -2,6 +2,7 @@ const { dbName,DB_URL } = require("./config");
 const {MongoClient} = require('mongodb');
 const { initPalmServices, convertToChecksum } = require("./services/palm");
 const { logs } = require("./logger");
+const { ObjectID } = require("bson");
 
 const checkSumFixes = async()=>{
     try {
@@ -12,6 +13,7 @@ const checkSumFixes = async()=>{
         logs('info','checksumFixes',`Connected Succesfully to ${DB_URL}`)
         const db = client.db(dbName)
         const withdrawCollection = db.collection('nftwithdrawhistories')
+        //{_id: ObjectID('62dfb5716aeb930637cfa1ae')}
         const records = await withdrawCollection.find({}).toArray()
         const totalCounts = records.length
         logs('info','checksumFixes',`Total Record count: ${totalCounts}`)
